@@ -1653,6 +1653,7 @@ def auto_arima_f(
         order=(0, d, 0),
         seasonal={"order": (0, D, 0), "period": m},
     )
+    fit["ic"] = math.inf
     results[1] = (0, d, 0, 0, D, 0, constant, fit["ic"])
     if fit["ic"] < bestfit["ic"]:
         bestfit = fit
