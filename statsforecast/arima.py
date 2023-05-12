@@ -2063,6 +2063,7 @@ def auto_arima_f(
         order=(0, d, 0),
         seasonal={"order": (0, D, 0), "period": m},
     )
+    fit["ic"] = math.inf
     results[1] = (0, d, 0, 0, D, 0, constant, fit["ic"])
     if fit["ic"] < bestfit["ic"]:
         bestfit = fit
@@ -2096,17 +2097,17 @@ def auto_arima_f(
             Q = Q_
             q = q_
         k += 1
-    if constant:
-        fit = p_myarima(
-            order=(0, d, 0),
-            seasonal={"order": (0, D, 0), "period": m},
-            constant=False,
-        )
-        results[k + 1] = (0, d, 0, 0, D, 0, 0, fit["ic"])
-        if fit["ic"] < bestfit["ic"]:
-            bestfit = fit
-            p = q = P = Q = 0
-        k += 1
+    # if constant:
+    #     fit = p_myarima(
+    #         order=(0, d, 0),
+    #         seasonal={"order": (0, D, 0), "period": m},
+    #         constant=False,
+    #     )
+    #     results[k + 1] = (0, d, 0, 0, D, 0, 0, fit["ic"])
+    #     if fit["ic"] < bestfit["ic"]:
+    #         bestfit = fit
+    #         p = q = P = Q = 0
+    #     k += 1
 
     def try_params(p, d, q, P, D, Q, constant, k, bestfit):
         k += 1
