@@ -72,7 +72,11 @@ def etscalc(y, n, x, m, error, trend, season, alpha, beta, gamma, phi, e, amse, 
         if error == ADD:
             e[i] = y[i] - f[0]
         else:
-            e[i] = (y[i] - f[0]) / f[0]
+            if math.fabs(f[0]) < TOL:
+                f_0 = f[0] + TOL
+            else:
+                f_0 = f[0]
+            e[i] = (y[i] - f[0]) / f_0
         for j in range(nmse):
             if (i + j) < n:
                 denom[j] += 1.0
@@ -231,10 +235,8 @@ def etssimulate(x, m, error, trend, season, alpha, beta, gamma, phi, h, y, e):
 # %% ../nbs/ets.ipynb 10
 @njit(nogil=NOGIL, cache=CACHE)
 def etsforecast(x, m, trend, season, phi, h, f):
-    s = np.zeros(24)
-    if m > 24 and season > NONE:
-        return
-    elif m < 1:
+    s = np.zeros(m)
+    if m < 1:
         m = 1
     # Copy initial state components
     l = x[0]
@@ -1258,7 +1260,7 @@ def ets_f(
                     if ttype == "N" and dtype:
                         continue
                     if restrict:
-                        if etype == "A" and (ttype == "M" and stype == "M"):
+                        if etype == "A" and (ttype == "M" or stype == "M"):
                             continue
                         if etype == "M" and ttype == "M" and stype == "A":
                             continue
