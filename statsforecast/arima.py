@@ -365,7 +365,10 @@ def arima_css(y, arma, phi, theta, ncond):
             nu += 1
             ssq += tmp * tmp
 
-    res = ssq / nu
+    if nu != 0:
+        res = ssq / nu
+    else:
+        res = 0
 
     return res, resid
 
