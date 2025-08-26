@@ -172,7 +172,10 @@ arima_css(const py::array_t<double> yv, const py::array_t<int32_t> armav,
       ssq += tmp * tmp;
     }
   }
-
+  if (nu == 0) {
+    // return {std::numeric_limits<double>::infinity(), residv};
+    return {0.0, residv};
+  }
   return {ssq / nu, residv};
 }
 
